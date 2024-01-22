@@ -1,21 +1,32 @@
 import './style.css';
 
 const GIPHY_API_KEY = 'q60528g7xYbZgGDN3R887xY2C0gerKbw';
+let grid = null;
 let imgArray = [];
 
-async function createRandomGifImgGrid(parentElement, imgCount, searchTag) {
-  document.body.style.setProperty('--grid-row-col-count', Math.sqrt(imgCount));
-  for (let i = 0; i < imgCount; i++) {
-    const img = await createRandomGifImg(searchTag);
-    imgArray.push(img);
-    parentElement.appendChild(img);
-  }
+function createRandomGifImgGrid(parentElement, rowColCount) {
+  grid = document.createElement('div');
+  grid.classList.add('gif-grid');
+  grid.style.setProperty('--grid-row-col-count', rowColCount);
+  imgArray = createImgElements(grid, rowColCount);
+  parentElement.appendChild(grid);
 }
 
-async function createRandomGifImg(searchTag) {
-  const img = document.createElement('img');
-  img.src = await getRandomGifUrlAsync(searchTag);
-  return img;
+function createImgElements(parentElement, rowColCount) {
+  const totalImgs = rowColCount * rowColCount;
+  const imgElements = [];
+  for (let i = 0; i < totalImgs; i++) {
+    const img = document.createElement('img');
+    imgElements.push(img);
+    parentElement.appendChild(img);
+  }
+  return imgElements;
+}
+
+async function populateImgs(searchTag) {
+  for (let i = 0; i < imgArray.length; i += 1) {
+    imgArray[i].src = await getRandomGifUrlAsync(searchTag);
+  }
 }
 
 async function getRandomGifUrlAsync(searchTag) {
@@ -31,15 +42,16 @@ async function getRandomGifUrlAsync(searchTag) {
   }
 }
 
+async function randomiseImgInGrid(searchTag) {
+  const img = imgArray[getRangedRandomInt(0, imgArray.length - 1)];
+  img.src = await getRandomGifUrlAsync(searchTag);
+}
+
 function getRangedRandomInt(min, max) {
   const range = max - min;
   return Math.round(min + range * Math.random());
 }
 
-createRandomGifImgGrid(document.body, 9, 'cat');
-
-setInterval(async () => {
-  const img = imgArray[getRangedRandomInt(0, imgArray.length - 1)];
-  const url = await getRandomGifUrlAsync('cat');
-  img.src = url;
-}, 1000);
+createRandomGifImgGrid(document.body, 3);
+populateImgs('cat');
+setInterval(() => randomiseImgInGrid('cat'), 1000);

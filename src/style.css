@@ -13,11 +13,19 @@
 body {
   height: 100vh;
   display: grid;
-  grid-template-columns: repeat(var(--grid-row-col-count), 1fr);
-  grid-template-rows: repeat(var(--grid-row-col-count), 1fr);
+  place-items: center;
 }
 
-body > * {
+.gif-grid {
+  width: 600px;
+  height: 600px;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-row-col-count), 1fr);
+  grid-template-rows: repeat(var(--grid-row-col-count), 1fr);
+  border: 5px solid black;
+}
+
+.gif-grid img {
   height: 100%;
   width: 100%;
 }
