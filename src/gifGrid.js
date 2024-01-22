@@ -2,8 +2,17 @@ import { getRangedRandomInt } from './math';
 
 const GIPHY_API_KEY = 'q60528g7xYbZgGDN3R887xY2C0gerKbw';
 let grid = null;
+let errorMessage = null;
 let imgArray = [];
 let imgRefreshInterval = null;
+
+function createErrorMessage() {
+  const div = document.createElement('div');
+  div.classList.add('gif-grid-error', 'display-none');
+  div.innerText = 'Failure to load images!';
+  errorMessage = div;
+  return div;
+}
 
 function createImgElements(parentElement, rowColCount) {
   const totalImgs = rowColCount * rowColCount;
@@ -21,6 +30,7 @@ function createRandomGifImgGrid(rowColCount) {
   grid.classList.add('gif-grid');
   grid.style.setProperty('--grid-row-col-count', rowColCount);
   imgArray = createImgElements(grid, rowColCount);
+  grid.appendChild(createErrorMessage());
   return grid;
 }
 
@@ -31,8 +41,10 @@ async function getRandomGifUrl(searchTag) {
       { mode: 'cors' },
     );
     const json = await response.json();
+    errorMessage.classList.add('display-none');
     return json.data.images.original.url;
   } catch (error) {
+    errorMessage.classList.remove('display-none');
     console.error(error);
   }
   // If nothing was returned by the try block
