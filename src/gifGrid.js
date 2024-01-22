@@ -41,9 +41,14 @@ async function getRandomGifUrl(searchTag) {
       { mode: 'cors' },
     );
     const json = await response.json();
-    errorMessage.classList.add('display-none');
-    return json.data.images.original.url;
+    if (json.data.images.length === 0)
+      throw new Error(`Giphy found no images for ${searchTag}!`);
+    else {
+      errorMessage.classList.add('display-none');
+      return json.data.images.original.url;
+    }
   } catch (error) {
+    errorMessage.innerText = error;
     errorMessage.classList.remove('display-none');
     console.error(error);
   }
