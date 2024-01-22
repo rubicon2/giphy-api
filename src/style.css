@@ -1,5 +1,7 @@
 :root {
   box-sizing: border-box;
+  --font: 'Helvetica';
+  --font-size: 16;
   --grid-row-col-count: 4;
 }
 
@@ -12,8 +14,11 @@
 
 body {
   height: 100vh;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .gif-grid {
@@ -28,4 +33,37 @@ body {
 .gif-grid img {
   height: 100%;
   width: 100%;
+}
+
+.searchbar {
+  display: flex;
+  gap: 1rem;
+}
+
+.searchbar input,
+.searchbar button {
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: var(--font);
+  font-size: var(--font-size);
+}
+
+.searchbar input {
+  width: 250px;
+  padding: 0.5rem;
+}
+
+.searchbar button {
+  padding: 0.5rem;
+}
+
+.searchbar button:hover {
+  background-color: rgb(235, 235, 235);
+}
+
+.searchbar button:active {
+  background-color: rgb(48, 48, 48);
+  color: rgb(235, 235, 235);
 }
