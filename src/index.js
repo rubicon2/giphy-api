@@ -1,11 +1,9 @@
 import './style.css';
 
-import {
-  createRandomGifImgGrid,
-  populateImgs,
-  randomiseImgInGrid,
-} from './gifGrid';
+import { createRandomGifImgGrid, populateImgs } from './gifGrid';
 
-createRandomGifImgGrid(document.body, 3);
+
+const { body } = document;
+
+body.appendChild(createRandomGifImgGrid(3));
 populateImgs('cat');
-setInterval(() => randomiseImgInGrid('cat'), 1000);
